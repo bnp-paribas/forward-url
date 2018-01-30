@@ -1,0 +1,16 @@
+{
+  "name": "forward-url",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon --exec \"jasmine\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jasmine": "^2.9.0",
+    "nodemon": "^1.14.11"
+  }
+}
