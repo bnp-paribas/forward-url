@@ -13,9 +13,14 @@
     "chai": "^4.1.2",
     "chai-http": "^3.0.0",
     "jasmine": "^2.9.0",
+    "nock": "^9.1.6",
     "nodemon": "^1.14.11"
   },
   "dependencies": {
-    "express": "^4.16.2"
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "json-pretty-html": "^1.0.2",
+    "request": "^2.83.0",
+    "request-promise-native": "^1.0.5"
   }
 }

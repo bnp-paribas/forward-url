@@ -1,5 +1,81 @@
 <html>
-    <body>
-        <h1>dummy</h1>
-    </body>
+  <head>
+    <title>expressworks</title>
+    <link rel="stylesheet" type="text/css" href="/main.css"/>
+    <style>
+  body {
+    font-family: Menlo, Monaco, "Courier New", monospace;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    letter-spacing: 0;
+    background-color: #24282A;
+    color: #d4d4d4;
+    text-align: left;
+    border-top: 1px solid #121516;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: 0;
+}
+.json-pretty {
+    padding-left: 30px;
+    padding-right: 30px;
+}
+.json-selected {
+    background-color: rgba(139, 191, 228, 0.19999999999999996);
+}
+
+.json-string {
+    color: #6caedd;
+}
+
+.json-key {
+    color: #ec5f67;
+}
+
+.json-boolean {
+    color: #99c794;
+}
+
+.json-number {
+    color: #99c794;
+}
+
+#wrapper {
+  display: flex;
+}
+#left {
+  flex: 0 0 40%;
+}
+#right {
+  flex: 1;
+}
+    </style>
+  </head>
+  <body>
+    <p>Please enter a Rest URL</p>
+    <form action="/form" method="post">
+      <input name="str" type="value"/>
+      <input type="button" value="send" onclick="forwardUrl()"/>
+      <!-- <input type="submit"> -->
+    </form>
+    <div id="wrapper">
+      <div id="left"><h3>Rest result</h4><div id="result"></div></div>
+      <div id="right"><h3>Log</h4><div id="log">error, <br> log, <br>error</div></div>
+    </div>
+    <script>
+      function forwardUrl () {
+        const url = document.querySelector('form').querySelector('input[name="str"]').value
+         var xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              document.getElementById('result').innerHTML = this.responseText;
+            }
+          };
+        xhttp.open("POST", "/forward");
+        xhttp.setRequestHeader("Content-Type", "application/json");
+        xhttp.send(JSON.stringify({url: url}));
+      }
+    </script>
+  </body>
 </html>
