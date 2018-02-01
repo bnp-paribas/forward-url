@@ -1,6 +1,6 @@
 
 applications:
-- name:    forward-url
+- name:    cs8433-forward-url-cb
   host:    forward-url-cb
   memory:  128M
   command: npm start

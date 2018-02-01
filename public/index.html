@@ -44,42 +44,53 @@
 #wrapper {
   display: flex;
 }
+
 #left {
   flex: 0 0 40%;
 }
 #right {
+  margin-left: 1em;
   flex: 1;
 }
-
-#result
-#log {
-  overflow: scroll;
+#container {
+  margin-left: 1em;
+  margin-right: 1em;
 }
+
+#result,
+#log {
+  height: 80%;
+  overflow-y: scroll;
+}
+
     </style>
   </head>
   <body>
-    <p>Please enter a Rest URL</p>
-    <form>
-      <input name="str" type="value" size="90" width="256"/>
-      <input type="button" value="GET" onclick="forwardUrl()"/>
-    </form>
-    <div id="wrapper">
-      <div id="left"><h3>Rest result</h4><div id="result"></div></div>
-      <div id="right"><h3>Log</h4><div id="log">error, <br> log, <br>error</div></div>
+    <div id="container">
+      <p>Please enter a Rest URL</p>
+        <input id="url" name="url" type="value" size="90" width="256"/>
+        <button onclick="forwardUrl()">GET</button>
+      <div id="wrapper">
+        <div id="left"><h3>Rest result</h3><div id="result"></div></div>
+        <div id="right"><div>
+            <h3><button onclick="updateLogs()" style="margin-right:20px" >refresh</button>Log</h3><div id="log"></div></div>
+        </div>
+      </div>
     </div>
     <script>
       function forwardUrl () {
-        const url = document.querySelector('form').querySelector('input[name="str"]').value
+        const url = document.getElementById('url').value
          var xhttp = new XMLHttpRequest();
           xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
               document.getElementById('result').innerHTML = this.responseText;
+              setTimeout(updateLogs, 0)
             }
           };
         xhttp.open("POST", "/forward");
         xhttp.setRequestHeader("Content-Type", "application/json");
         xhttp.send(JSON.stringify({url: url}));
-        setTimeout(updateLogs, 1000)
+        setTimeout(updateLogs, 0)
       }
       function updateLogs () {
         var xhttp = new XMLHttpRequest();
@@ -87,20 +98,28 @@
             if (this.readyState == 4 && this.status == 200) {
               document.getElementById('log').innerHTML = JSON.parse(this.responseText)
                 .map((logEntry) => {
+                    const entry = logEntry.msg.split('')
+                      .reduce((init, char) => {
+                          init.count++;
+                          init.txt += char;
+                          if (init.count % 80 === 0) {
+                            init.txt += '<br>'
+                          }
+                          return init;
+                      }, {count: 0, txt: ''}).txt;
                     const markup = `
                       <div style="color:${(logEntry.type==='ERR') ? 'red':'green'}">
-                        ${logEntry.timestamp} - ${logEntry.msg}
+                        ${logEntry.timestamp} <br> ${entry}
                       </div>
                     `;
                     return markup
-                });
+                }).join('<br>');
             }
           };
         xhttp.open("GET", "/logs");
         xhttp.send();
       }
       updateLogs()
-      setInterval(updateLogs, 10000)
     </script>
   </body>
 </html>
