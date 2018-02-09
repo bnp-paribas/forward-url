@@ -1,6 +1,5 @@
-
+---
 applications:
-
  - name: MT5344-forward_url-dev01
    random-route: false
    memory: 64M
