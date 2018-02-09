@@ -1,6 +1,8 @@
 
 applications:
-- name:    cs8433-forward-url-cb
-  host:    forward-url-cb
-  memory:  128M
-  command: npm start
+
+ - name: MT5344-forward_url-dev01
+   random-route: false
+   memory: 64M
+   instances: 1
+   no-route: false
